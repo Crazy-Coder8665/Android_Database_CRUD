@@ -49,11 +49,31 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(STUDENT_ENROLL, STUDENTModel.isEnroll());
         db.insert(STUDENT_TABLE, null, cv);
         db.close();
-        //NullCoumnHack
-        //long insert =
-        //if (insert == -1) { return false; }
-        //else{return true;}
+
     }
+
+    boolean updateStudent(int rn, String user){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(STUDENT_NAME, user);
+        cv.put(STUDENT_ROLL, rn);
+
+        return db.update(STUDENT_TABLE,cv,STUDENT_ROLL + "=" + rn,null)>0;
+
+    }
+
+
+    boolean deleteStudent(int rollNum){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        return db.delete(STUDENT_TABLE,STUDENT_ROLL + "=" + rollNum,null)>0;
+
+    }
+
+
 
     public ArrayList<StudentModel> getAllStudents() {
 
