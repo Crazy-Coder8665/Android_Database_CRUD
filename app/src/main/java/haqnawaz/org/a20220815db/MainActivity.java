@@ -96,5 +96,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean resultset ;
+                DBHelper dbHelper = new DBHelper(MainActivity.this);
+                if(!editRollNumber.getText().toString().isEmpty()){
+                    resultset =   dbHelper.deleteStudent(Integer.parseInt(editRollNumber.getText().toString()));
+                    if(resultset){
+                        editName.setText("");
+                        editRollNumber.setText("");
+                        result.setText("Record Deleted");
+                    }
+                    else{
+                        result.setText("No Record Found");
+                    }
+                }
+                else{
+                    result.setText("Please Enter Correct Roll Number");
+                }
+            }
+        });
+
     }
 }
