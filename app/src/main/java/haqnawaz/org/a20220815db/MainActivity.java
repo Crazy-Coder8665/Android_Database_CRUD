@@ -9,13 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button buttonAdd, buttonViewAll;
+    Button buttonAdd, buttonViewAll, updateButton,deleteButton;
+    TextView result;
     EditText editName, editRollNumber;
     Switch switchIsActive;
     ListView listViewStudent;
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
         editRollNumber = findViewById(R.id.editTextRollNumber);
         switchIsActive = findViewById(R.id.switchStudent);
         listViewStudent = findViewById(R.id.listViewStudent);
+        updateButton = findViewById(R.id.updateBtn);
+        result = findViewById(R.id.resultTxt);
+        deleteButton = findViewById(R.id.deleteBtn);
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             StudentModel studentModel;
@@ -39,12 +44,14 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     studentModel = new StudentModel(editName.getText().toString(), Integer.parseInt(editRollNumber.getText().toString()), switchIsActive.isChecked());
                     //Toast.makeText(MainActivity.this, studentModel.toString(), Toast.LENGTH_SHORT).show();
+                    DBHelper dbHelper  = new DBHelper(MainActivity.this);
+                    dbHelper.addStudent(studentModel);
+                    result.setText("Inserted");
                 }
                 catch (Exception e){
                     Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 }
-                DBHelper dbHelper  = new DBHelper(MainActivity.this);
-                dbHelper.addStudent(studentModel);
+
             }
         });
 
@@ -56,7 +63,36 @@ public class MainActivity extends AppCompatActivity {
                 ArrayAdapter arrayAdapter = new ArrayAdapter<StudentModel>
                         (MainActivity.this, android.R.layout.simple_list_item_1,list);
                 listViewStudent.setAdapter(arrayAdapter);
+                result.setText("List shown");
 
+            }
+        });
+
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean resultset ;
+                DBHelper dbHelper = new DBHelper(MainActivity.this);
+                if(!editName.getText().toString().isEmpty() && !editRollNumber.getText().toString().isEmpty()){
+                    resultset =   dbHelper.updateStudent(Integer.parseInt(editRollNumber.getText().toString()),editName.getText().toString());
+                    if(resultset){
+
+                        editName.setText("");
+                        editRollNumber.setText("");
+                        result.setText("Updated");
+
+                    }
+                    else{
+
+                        result.setText("Nothing Found");
+
+                    }
+                }
+                else{
+
+                    result.setText("Give Correct Input");
+
+                }
             }
         });
 
