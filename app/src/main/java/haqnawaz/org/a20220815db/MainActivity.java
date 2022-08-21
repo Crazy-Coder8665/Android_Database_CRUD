@@ -106,14 +106,14 @@ public class MainActivity extends AppCompatActivity {
                     if(resultset){
                         editName.setText("");
                         editRollNumber.setText("");
-                        result.setText("Record Deleted");
+                        result.setText("Delete successful");
                     }
                     else{
-                        result.setText("No Record Found");
+                        result.setText("Nothing Found");
                     }
                 }
                 else{
-                    result.setText("Please Enter Correct Roll Number");
+                    result.setText("Give Correct Input");
                 }
             }
         });
